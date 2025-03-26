@@ -5,13 +5,11 @@ export const dbSettings = {
     user: config.DB_USER,
     password: config.DB_PASSWORD,
     server: config.DB_SERVER,
-    port: config.DB_PORT,
+    port: Number(config.DB_PORT),
     database: config.DB_DATABASE,
-    //for azure sql
-    // options: {
-    //     encrypt: true,
-    //     trustServerCertificate: true,
-    // },
+    options: {
+        trustServerCertificate: true,
+    },
 };
 
 export async function getConnection() {

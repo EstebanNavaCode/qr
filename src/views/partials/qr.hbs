@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="/assets/css/qr.css">
+
+<link rel="stylesheet" href="/assets/css/exa.css">
+<h2>Tu Código QR</h2>
+
+<div id="qr-container"></div>
+
+<div class="centrado">
+    <button class="boton-elegante">Scan Qr code</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    const nombre = sessionStorage.getItem("nombre");
+    const apellido = sessionStorage.getItem("apellido");
+    const telefono = sessionStorage.getItem("telefono");
+    const correo = sessionStorage.getItem("correo");
+
+    if (!nombre || !apellido || !telefono || !correo) {
+      document.getElementById("qr-container").innerText = "Datos incompletos";
+      return;
+    }
+
+    // 🔥 Prefijo TXT: mejora compatibilidad con iOS
+    const textoQR = `TXT: Nombre: ${nombre} ${apellido} | Teléfono: ${telefono} | Correo: ${correo}`;
+
+    try {
+      const canvas = document.createElement('canvas');
+      await QRCode.toCanvas(canvas, textoQR, {
+        errorCorrectionLevel: 'L',
+        margin: 1,
+        scale: 6
+      });
+      document.getElementById('qr-container').appendChild(canvas);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>
