@@ -21,7 +21,6 @@ app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "src", "views"));
 
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,7 +36,6 @@ app.get("/", (req, res) => {
     res.render("home/home"); 
 });
 
-
 app.get("/dashboard",(req,res)=>{
     res.render("partials/qr")
 })
@@ -46,7 +44,6 @@ app.get("/dashboard",(req,res)=>{
 const PORT = config.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on: \nhttp://localhost:${PORT}`);
-
 });
 
 export default app;

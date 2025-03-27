@@ -13,8 +13,7 @@ export const loginUser = async (req, res) => {
             FROM usuario 
             WHERE correo = @email AND contrasena = @password
           `);
-          
-  
+        
       if (result.recordset.length > 0) {
         const user = result.recordset[0];
         res.json({ success: true, user });
@@ -24,7 +23,6 @@ export const loginUser = async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: 'Error en el servidor' });
-
     }
   };
   

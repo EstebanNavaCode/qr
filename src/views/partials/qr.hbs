@@ -19,8 +19,6 @@
 
   <div id="qr-container" class="text-center my-4" data-aos="fade-down" data-aos-duration="2400"></div>
 
-
-
   <div class="text-center my-5" data-aos="fade-down" data-aos-duration="2400">
     <button id="btnEscanear" class="btn-custom">Ir al Escáner</button>
   </div>
@@ -88,7 +86,6 @@
     const telefono = sessionStorage.getItem("telefono");
     const correo = sessionStorage.getItem("correo");
 
-    // Poner el nombre en la bienvenida
     if (nombre) {
       document.getElementById("username").innerText = nombre;
     }
@@ -113,7 +110,6 @@
     }
   });
 
-
   const btnEscanear = document.getElementById('btnEscanear');
   const seccionEscaner = document.getElementById('seccionEscaner');
 
@@ -126,4 +122,5 @@
       seccionEscaner.style.display = "none"; // Opcional, para ocultarla nuevamente
     }
   });       
+
 </script>

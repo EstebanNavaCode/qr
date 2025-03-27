@@ -27,8 +27,6 @@
     height: auto;
   }
   
-  
-  
   .boton-elegante::after {
     content: "";
     position: absolute;
