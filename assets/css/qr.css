@@ -20,6 +20,13 @@
     align-items: center;
     height: 100vh;
   }
+
+  #qr-container canvas {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+  }
+  
   
   
   .boton-elegante::after {
