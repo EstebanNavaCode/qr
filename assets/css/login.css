@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('../img/fondos/bg.png') no-repeat center center;
+    background-size: cover;
+}
+
+.login-container {
+    width: 400px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-logo {
+    max-width: 250px;
+}
+
+.btn-custom {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-custom:hover {
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+}
+
+input::placeholder {
+    opacity: 0.5;
+}
+
+.custom-bold{
+    font-weight: 500;
+}
