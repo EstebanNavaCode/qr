@@ -86,19 +86,22 @@
   AOS.init();
 
   window.addEventListener('DOMContentLoaded', async () => {
-  
-    const id = sessionStorage.getItem("id");
+    const nombre = sessionStorage.getItem("nombre");
+    const apellido = sessionStorage.getItem("apellido");
+    const telefono = sessionStorage.getItem("telefono");
+    const correo = sessionStorage.getItem("correo");
 
+    // Poner el nombre en la bienvenida
     if (nombre) {
       document.getElementById("username").innerText = nombre;
     }
 
-    if (!id) {
+    if (!nombre || !apellido || !telefono || !correo) {
       document.getElementById("qr-container").innerText = "Datos incompletos";
       return;
     }
 
-    const textoQR = `Id: ${id}`;
+    const textoQR = `TXT: Nombre: ${nombre} ${apellido} | Teléfono: ${telefono} | Correo: ${correo}`;
 
     try {
       const canvas = document.createElement('canvas');
@@ -126,7 +129,7 @@
     qrResults.innerText = "";
 
     html5QrCode.start(
-      { facingMode: "environment" },//camara trasera en iphone
+      { facingMode: "environment" },
       {
         fps: 10,
         qrbox: { width: 250, height: 250 }
@@ -135,9 +138,28 @@
         console.log("Código escaneado:", decodedText);
         qrResults.innerText = `✅ Código detectado: ${decodedText}`;
 
+        const remitente_id = sessionStorage.getItem("id"); // el que escanea
+        const destinatario_id = decodedText.replace("Id: ", "").trim();
+
+        fetch("/registrar-intercambio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ remitente_id, destinatario_id })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              console.log(data.message);
+            } else {
+              console.warn(data.message);
+            }
+          })
+          .catch(err => console.error("Error al registrar intercambio:", err));
+
         html5QrCode.stop().then(() => {
           console.log("Escaneo detenido");
-
           qrReader.style.display = "none";
         });
       },
@@ -146,5 +168,4 @@
       }
     );
   });
-
 </script>
