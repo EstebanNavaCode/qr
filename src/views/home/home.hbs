@@ -1,33 +1,34 @@
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Addex</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/css/bienvenida.css">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Addex</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
-<div class="login-container" data-aos="fade-down" data-aos-duration="3000">
-  <div class="py-5 text-center">
-    <img src="assets/img/logos/lg.png" alt="Logo" class="login-logo">
-  </div>
-  <form id="loginForm" >
-    <div class="mb-3">
-      <label  for="email" class="form-label fs-5 custom-bold">Usuario:</label>
-      <input id="username" type="email" class="form-control form-control-lg shadow-sm rounded-3 border-black" id="email"
-        placeholder="Ingrese su correo" required>
+<body>
+    <div class="login-container" data-aos="fade-down" data-aos-duration="3000">
+        <div class="py-5 text-center">
+            <img src="assets/img/logos/lg.png" alt="Logo" class="login-logo">
+        </div>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label fs-5 custom-bold">Usuario:</label>
+                <input id="username" type="email" class="form-control form-control-lg shadow-sm rounded-3 border-black" id="email"
+                    placeholder="Ingrese su correo" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label fs-5 custom-bold">Contraseña:</label>
+                <input type="password" class="form-control form-control-lg shadow-sm rounded-3 border-black"
+                    id="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-custom  btn-lg rounded-3">Iniciar sesión</button>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-      <label  for="password" class="form-label fs-5 custom-bold">Contraseña:</label>
-      <input id="password" type="password" class="form-control form-control-lg shadow-sm rounded-3 border-black" id="password"
-        placeholder="Ingrese su contraseña" required>
-    </div>
-    <div class="text-center mt-4">
-      <button type="submit" class="btn btn-custom  btn-lg rounded-3">Iniciar sesión</button>
-    </div>
-  </form>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
