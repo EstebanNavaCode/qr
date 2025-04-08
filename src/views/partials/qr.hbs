@@ -85,17 +85,18 @@
     const apellido = sessionStorage.getItem("apellido");
     const telefono = sessionStorage.getItem("telefono");
     const correo = sessionStorage.getItem("correo");
+    const id = sessionStorage.getItem("id")
 
     if (nombre) {
       document.getElementById("username").innerText = nombre;
     }
 
-    if (!nombre || !apellido || !telefono || !correo) {
+    if (!nombre || !apellido || !telefono || !correo || !id) {
       document.getElementById("qr-container").innerText = "Datos incompletos";
       return;
     }
 
-    const textoQR = `TXT: Nombre: ${nombre} ${apellido} | Teléfono: ${telefono} | Correo: ${correo}`;
+    const textoQR = `TXT: Nombre: ${nombre} ${apellido} | Teléfono: ${telefono} | Correo: ${correo} | Id: ${id} `;
 
     try {
       const canvas = document.createElement('canvas');
