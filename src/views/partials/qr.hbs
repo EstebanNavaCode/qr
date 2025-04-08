@@ -44,30 +44,19 @@
 
   <div id="" class="" data-aos="fade-down" data-aos-duration="2600">
     <div class="table-responsive">
-      <table class="table table-striped">
-        <thead class="bg-dark text-white">
-          <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Fecha registro</th>
-            <th>Hora registro</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white">
-          <tr>
-            <td>Juan Alexander</td>
-            <td>Pérez Arteaga</td>
-            <td>2025-03-14</td>
-            <td>10:30 AM</td>
-          </tr>
-          <tr>
-            <td>Ana</td>
-            <td>Gómez</td>
-            <td>2025-03-13</td>
-            <td>03:15 PM</td>
-          </tr>
-        </tbody>
-      </table>
+   <table class="table table-striped">
+  <thead class="bg-dark text-white">
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Empresa</th>
+      <th>Correo</th>
+      <th>Teléfono</th>
+    </tr>
+  </thead>
+  <tbody id="contactos-body" class="bg-white"></tbody>
+</table>
+
     </div>
   </div>
 
@@ -90,18 +79,19 @@
     const apellido = sessionStorage.getItem("apellido");
     const telefono = sessionStorage.getItem("telefono");
     const correo = sessionStorage.getItem("correo");
+    const id = sessionStorage.getItem("id")
 
     // Poner el nombre en la bienvenida
     if (nombre) {
       document.getElementById("username").innerText = nombre;
     }
 
-    if (!nombre || !apellido || !telefono || !correo) {
+    if (!id) {
       document.getElementById("qr-container").innerText = "Datos incompletos";
       return;
     }
 
-    const textoQR = `TXT: Nombre: ${nombre} ${apellido} | Teléfono: ${telefono} | Correo: ${correo}`;
+    const textoQR = `ID:${id}`; 
 
     try {
       const canvas = document.createElement('canvas');
@@ -139,7 +129,8 @@
         qrResults.innerText = `✅ Código detectado: ${decodedText}`;
 
         const remitente_id = sessionStorage.getItem("id"); // el que escanea
-        const destinatario_id = decodedText.replace("Id: ", "").trim();
+        const destinatario_id = decodedText.replace("ID:", "").trim();
+
 
         fetch("/registrar-intercambio", {
           method: "POST",
@@ -168,4 +159,35 @@
       }
     );
   });
+
+  async function cargarContactos() {
+  const usuarioId = sessionStorage.getItem("id");
+  const tbody = document.getElementById("contactos-body");
+
+  if (!usuarioId) return;
+
+  try {
+    const res = await fetch(`/mis-contactos/${usuarioId}`);
+    const contactos = await res.json();
+
+    if (Array.isArray(contactos)) {
+      contactos.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.nombre}</td>
+          <td>${c.apellido}</td>
+          <td>${c.empresa}</td>
+          <td>${c.correo}</td>
+          <td>${c.telefono}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  } catch (err) {
+    console.error("Error al cargar contactos:", err);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', cargarContactos);
+
 </script>
