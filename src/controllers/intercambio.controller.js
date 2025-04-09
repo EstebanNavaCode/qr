@@ -8,8 +8,24 @@ export const registrarEscaneo = async (req, res) => {
   }
 
   try {
+    console.log("➡️ Datos recibidos:", { expositor_id, usuario_id, evento_id });
     const pool = await getConnection();
 
+    // Validar si ya existe
+    const existe = await pool.request()
+      .input("ID_EXP_EXR", sql.Int, expositor_id)
+      .input("ID_EVE_EXR", sql.Int, evento_id)
+      .input("ID_RC_EXR", sql.Int, usuario_id)
+      .query(`
+        SELECT * FROM EXPOSITORES_REGISTROS_T
+        WHERE ID_EXP_EXR = @ID_EXP_EXR AND ID_EVE_EXR = @ID_EVE_EXR AND ID_RC_EXR = @ID_RC_EXR
+      `);
+
+    if (existe.recordset.length > 0) {
+      return res.json({ success: false, message: "Este usuario ya fue escaneado anteriormente ❗" });
+    }
+
+    // Si no existe, lo insertamos
     await pool.request()
       .input("ID_EXP_EXR", sql.Int, expositor_id)
       .input("ID_EVE_EXR", sql.Int, evento_id)
@@ -20,24 +36,26 @@ export const registrarEscaneo = async (req, res) => {
       `);
 
     res.json({ success: true, message: "Escaneo registrado correctamente ✅" });
+
   } catch (error) {
-    console.error("Error al registrar escaneo:", error);
+    console.error("❌ Error al registrar escaneo:", error);
     res.status(500).json({ success: false, message: "Error al registrar el escaneo" });
   }
 };
 
+
 export const obtenerEscaneados = async (req, res) => {
-  const { expositor_id } = req.params;
+  const { usuario_id } = req.params; // <--- Aquí debe ser "usuario_id", NO "expositor_id"
 
   try {
     const pool = await getConnection();
     const result = await pool.request()
-      .input("expositor_id", sql.Int, expositor_id)
+      .input("usuario_id", sql.Int, usuario_id)
       .query(`
-        SELECT u.ID, u.NOMBRE, u.APELLIDO, u.EMPRESA, u.CORREO, u.TELEFONO
+        SELECT u.ID, u.NOMBRE, u.APELLIDO, u.EMPRESA, u.CORREO, u.TELEFONO, u.ESTADO, u.CIUDAD
         FROM EXPOSITORES_REGISTROS_T r
         JOIN USUARIO u ON u.ID = r.ID_RC_EXR
-        WHERE r.ID_EXP_EXR = @expositor_id
+        WHERE r.ID_EXP_EXR = @usuario_id
       `);
 
     res.json(result.recordset);
