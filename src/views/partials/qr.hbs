@@ -50,6 +50,8 @@
             <th>Empresa</th>
             <th>Correo</th>
             <th>Teléfono</th>
+            <th>Estado</th>
+            <th>Ciudad</th>
           </tr>
         </thead>
         <tbody id="contactos-body" class="bg-white"></tbody>
@@ -72,16 +74,17 @@
   AOS.init();
 
   window.addEventListener('DOMContentLoaded', async () => {
-    const Id = sessionStorage.getItem("Id_Exp")
+    const Id = sessionStorage.getItem("Id_Exp");
     const Empresa = sessionStorage.getItem("Empresa_Exp");
 
-    // Poner el nombre en la bienvenida
+    // Mostrar nombre de la empresa
     if (Empresa) {
       document.getElementById("Empresa_Exp").innerText = Empresa;
-
     }
-  });
 
+    // Cargar contactos del expositor
+    await cargarContactos();
+  });
 
   const btnEscanear = document.getElementById('btnEscanear');
   const seccionEscaner = document.getElementById('seccionEscaner');
@@ -105,11 +108,7 @@
         console.log("Código escaneado:", decodedText);
         qrResults.innerText = `✅ Código detectado: ${decodedText}`;
 
-        const remitente_id = sessionStorage.getItem("id"); // el que escanea
-        const destinatario_id = decodedText.replace("ID:", "").trim();
-
-
-        fetch("/registrar-escaneo", {
+        fetch("/registrar-intercambio", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -117,14 +116,14 @@
           body: JSON.stringify({
             expositor_id: sessionStorage.getItem("Id_Exp"),
             usuario_id: decodedText.replace("ID:", "").trim(),
-            evento_id: 1 // o el que corresponda
+            evento_id: 1
           })
         })
-
           .then(res => res.json())
           .then(data => {
             if (data.success) {
               console.log(data.message);
+              cargarContactos(); // ✅ recarga la tabla automáticamente
             } else {
               console.warn(data.message);
             }
@@ -143,7 +142,7 @@
   });
 
   async function cargarContactos() {
-    const usuarioId = sessionStorage.getItem("id");
+    const usuarioId = sessionStorage.getItem("Id_Exp");
     const tbody = document.getElementById("contactos-body");
 
     if (!usuarioId) return;
@@ -153,15 +152,18 @@
       const contactos = await res.json();
 
       if (Array.isArray(contactos)) {
+        tbody.innerHTML = "";
         contactos.forEach(c => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-          <td>${c.nombre}</td>
-          <td>${c.apellido}</td>
-          <td>${c.empresa}</td>
-          <td>${c.correo}</td>
-          <td>${c.telefono}</td>
-        `;
+            <td>${c.NOMBRE}</td>
+            <td>${c.APELLIDO}</td>
+            <td>${c.EMPRESA}</td>
+            <td>${c.CORREO}</td>
+            <td>${c.TELEFONO}</td>
+            <td>${c.ESTADO}</td>
+            <td>${c.CIUDAD}</td>
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -169,7 +171,4 @@
       console.error("Error al cargar contactos:", err);
     }
   }
-
-  window.addEventListener('DOMContentLoaded', cargarContactos);
-
 </script>
