@@ -25,7 +25,6 @@ export const registrarEscaneo = async (req, res) => {
       return res.json({ success: false, message: "Este usuario ya fue escaneado anteriormente ❗" });
     }
 
-    
     await pool.request()
       .input("ID_EXP_EXR", sql.Int, expositor_id)
       .input("ID_EVE_EXR", sql.Int, evento_id)
