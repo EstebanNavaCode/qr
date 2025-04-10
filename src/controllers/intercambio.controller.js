@@ -11,7 +11,7 @@ export const registrarEscaneo = async (req, res) => {
     console.log("➡️ Datos recibidos:", { expositor_id, usuario_id, evento_id });
     const pool = await getConnection();
 
-    // Validar si ya existe
+   
     const existe = await pool.request()
       .input("ID_EXP_EXR", sql.Int, expositor_id)
       .input("ID_EVE_EXR", sql.Int, evento_id)
@@ -25,7 +25,7 @@ export const registrarEscaneo = async (req, res) => {
       return res.json({ success: false, message: "Este usuario ya fue escaneado anteriormente ❗" });
     }
 
-    // Si no existe, lo insertamos
+    
     await pool.request()
       .input("ID_EXP_EXR", sql.Int, expositor_id)
       .input("ID_EVE_EXR", sql.Int, evento_id)
@@ -45,7 +45,7 @@ export const registrarEscaneo = async (req, res) => {
 
 
 export const obtenerEscaneados = async (req, res) => {
-  const { usuario_id } = req.params; // <--- Aquí debe ser "usuario_id", NO "expositor_id"
+  const { usuario_id } = req.params; 
 
   try {
     const pool = await getConnection();

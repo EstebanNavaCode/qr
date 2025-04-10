@@ -42,7 +42,6 @@
       const password = document.getElementById('password').value;
 
       const response = await fetch('/login', {
-        // Asegúrate de que coincida con tu ruta POST
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
