@@ -1,88 +1,112 @@
+AOS.init();
 
+window.addEventListener("DOMContentLoaded", async () => {
+  const Id = sessionStorage.getItem("Id_Exp");
+  const Empresa = sessionStorage.getItem("Empresa_Exp");
 
-  AOS.init();
+  if (Empresa) {
+    document.getElementById("Empresa_Exp").innerText = Empresa;
+  }
 
-  window.addEventListener('DOMContentLoaded', async () => {
-    const Id = sessionStorage.getItem("Id_Exp");
-    const Empresa = sessionStorage.getItem("Empresa_Exp");
+  await cargarContactos();
+});
 
-    if (Empresa) {
-      document.getElementById("Empresa_Exp").innerText = Empresa;
-    }
+const btnEscanear = document.getElementById("btnEscanear");
+const seccionEscaner = document.getElementById("seccionEscaner");
+const qrReader = document.getElementById("qr-reader");
+const qrResults = document.getElementById("qr-reader-results");
 
-    await cargarContactos();
-  });
+const html5QrCode = new Html5Qrcode("qr-reader");
 
-  const btnEscanear = document.getElementById('btnEscanear');
-  const seccionEscaner = document.getElementById('seccionEscaner');
-  const qrReader = document.getElementById('qr-reader');
-  const qrResults = document.getElementById('qr-reader-results');
+btnEscanear.addEventListener("click", () => {
+  seccionEscaner.style.display = "block";
+  qrReader.style.display = "block";
+  qrResults.innerText = "";
 
-  const html5QrCode = new Html5Qrcode("qr-reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 250 },
+    },
+    (decodedText, decodedResult) => {
+      //console.log("Código escaneado:", decodedText);
+      // qrResults.innerText = ` Código detectado: ${decodedText}`;
 
-  btnEscanear.addEventListener('click', () => {
-    seccionEscaner.style.display = "block";
-    qrReader.style.display = "block";
-    qrResults.innerText = "";
+      fetch("/registrar-intercambio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          expositor_id: sessionStorage.getItem("Id_Exp"),
+          usuario_id: decodedText.replace("ID:", "").trim(),
+          evento_id: 1,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log(data.message);
+            cargarContactos();
 
-    html5QrCode.start(
-      { facingMode: "environment" },
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 }
-      },
-      (decodedText, decodedResult) => {
-        console.log("Código escaneado:", decodedText);
-        qrResults.innerText = `✅ Código detectado: ${decodedText}`;
+            Swal.fire({
+              title: "¡Intercambio exitoso!",
+              text: "El código se escaneó correctamente y los datos fueron registrados.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } else {
+            console.warn(data.message);
 
-        fetch("/registrar-intercambio", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            expositor_id: sessionStorage.getItem("Id_Exp"),
-            usuario_id: decodedText.replace("ID:", "").trim(),
-            evento_id: 1
-          })
+            Swal.fire({
+              title: "Usuario ya registrado",
+              text: "Los datos de este usuario ya fueron escanedo anteriormente",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          }
         })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              console.log(data.message);
-              cargarContactos();
-            } else {
-              console.warn(data.message);
-            }
-          })
-          .catch(err => console.error("Error al registrar intercambio:", err));
+        .catch((err) => {
+          console.error("Error al registrar intercambio:", err);
 
-        html5QrCode.stop().then(() => {
-          console.log("Escaneo detenido");
-          qrReader.style.display = "none";
+          Swal.fire({
+            title: "Error de red",
+            text: "Ocurrió un error al intentar registrar el intercambio, revise su conexion e intente de nuevo.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         });
-      },
-      (errorMessage) => {
-        console.warn(`Escaneo fallido: ${errorMessage}`);
-      }
-    );
-  });
 
-  async function cargarContactos() {
-    const usuarioId = sessionStorage.getItem("Id_Exp");
-    const tbody = document.getElementById("contactos-body");
+      html5QrCode.stop().then(() => {
+        console.log("Escaneo detenido");
+        qrReader.style.display = "none";
+      });
+    },
+    (errorMessage) => {
+      console.warn(`Escaneo fallido: ${errorMessage}`);
+    }
+  );
+});
 
-    if (!usuarioId) return;
+async function cargarContactos() {
+  const usuarioId = sessionStorage.getItem("Id_Exp");
+  const tbody = document.getElementById("contactos-body");
 
-    try {
-      const res = await fetch(`/mis-contactos/${usuarioId}`);
-      const contactos = await res.json();
+  if (!usuarioId) return;
 
-      if (Array.isArray(contactos)) {
-        tbody.innerHTML = "";
-        contactos.forEach(c => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
+  try {
+    const res = await fetch(`/mis-contactos/${usuarioId}`);
+    const contactos = await res.json();
+
+    if (Array.isArray(contactos)) {
+      tbody.innerHTML = "";
+      contactos.forEach((c) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
             <td>${c.NOMBRE}</td>
             <td>${c.APELLIDO}</td>
             <td>${c.EMPRESA}</td>
@@ -91,11 +115,10 @@
             <td>${c.ESTADO}</td>
             <td>${c.CIUDAD}</td>
           `;
-          tbody.appendChild(tr);
-        });
-      }
-    } catch (err) {
-      console.error("Error al cargar contactos:", err);
+        tbody.appendChild(tr);
+      });
     }
+  } catch (err) {
+    console.error("Error al cargar contactos:", err);
   }
-
+}
