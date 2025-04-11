@@ -47,31 +47,42 @@ btnEscanear.addEventListener("click", () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            //console.log(data.message);
             cargarContactos();
-
+        
             Swal.fire({
               title: "¡Escaneo exitoso!",
               text: "El código se escaneó correctamente y los datos fueron registrados.",
               icon: "success",
               showConfirmButton: false,
               timer: 2000,
-            });setTimeout(() => {
-              location.reload();
-            }, 2100);
-            
-          } else {
-            console.warn(data.message);
-
+            });
+          } else if (data.message.includes("ya fue escaneado")) {
             Swal.fire({
               title: "Usuario ya registrado",
-              text: "Los datos de este usuario ya fueron escanedo anteriormente",
+              text: "Los datos de este usuario ya fueron escaneados anteriormente.",
               icon: "warning",
               showConfirmButton: false,
               timer: 2000,
             });
+          } else if (data.message.includes("no existe")) {
+            Swal.fire({
+              title: "Usuario no encontrado",
+              text: "Este código no pertenece a ningún usuario registrado.",
+              icon: "error",
+              confirmButtonColor: "#fa583f",
+              showConfirmButton: true,
+            });
+          } else {
+            Swal.fire({
+              title: "Error de red",
+              text: "Reivise su conexión a Internet.",
+              icon: "error",
+              showConfirmButton: false,
+            timer: 2000,
+            });
           }
         })
+        
         .catch((err) => {
           console.error("Error al registrar intercambio:", err);
 
