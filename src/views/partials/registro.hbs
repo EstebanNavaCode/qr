@@ -1,0 +1,61 @@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/registro.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow rounded-4" data-aos="fade-up" data-aos-duration="2000">
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <img class="register-logo" src="assets/img/logos/lg.png" alt="Addex">
+                            <h4 class="title mt-5 mb-4"><strong>Registro de expositores</strong></h4>
+                        </div>
+                        <form>
+                            <div class="form-floating-group mt-5 mb-4">
+                                <input type="text" class="form-control floating-input" id="nombre" placeholder=" "
+                                    required>
+                                <label for="nombre" class="floating-label">Nombre </label>
+                            </div>
+                            <div class="form-floating-group mb-4">
+                                <input type="text" class="form-control floating-input" id="apellidos" placeholder=" "
+                                    required>
+                                <label for="apellidos" class="floating-label">Apellidos </label>
+                            </div>
+                            <div class="form-floating-group mb-4">
+                                <input type="text" class="form-control floating-input" id="empresa" placeholder=" "
+                                    required>
+                                <label for="empresa" class="floating-label">Empresa </label>
+                            </div>
+                            <div class="form-floating-group mb-4">
+                                <input type="email" class="form-control floating-input" id="correo" placeholder=" "
+                                    required>
+                                <label for="correo" class="floating-label">Correo electrónico </label>
+                            </div>
+                            <div class="form-floating-group mb-4">
+                                <input type="password" class="form-control floating-input" id="contrasena"
+                                    placeholder=" " required>
+                                <label for="contrasena" class="floating-label">Contraseña </label>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-custom btn-lg rounded-3">Registrarse</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+</body>
+
