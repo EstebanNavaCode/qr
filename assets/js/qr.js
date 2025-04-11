@@ -47,7 +47,7 @@ btnEscanear.addEventListener("click", () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            console.log(data.message);
+            //console.log(data.message);
             cargarContactos();
 
             Swal.fire({
@@ -56,7 +56,10 @@ btnEscanear.addEventListener("click", () => {
               icon: "success",
               showConfirmButton: false,
               timer: 2000,
-            });
+            });setTimeout(() => {
+              location.reload();
+            }, 2100);
+            
           } else {
             console.warn(data.message);
 

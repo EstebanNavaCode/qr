@@ -1,0 +1,88 @@
+body {
+    height: 100vh;
+    background: url('../img/fondos/bg-3.png') no-repeat center center;
+    background-size: cover;
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 400;
+}
+
+.btn-custom {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-custom:hover {
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+}
+
+.register-logo {
+    max-width: 350px;
+}
+
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.form-control {
+    border: 2px solid #ced4da;
+    border-radius: 0.75rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: #7B003E;
+    box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+}
+
+.btn-custom:hover {
+    background-color: #7B003E;
+}
+
+.form-floating-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-input {
+    width: 100%;
+    padding: 1.2rem 1rem 0.5rem;
+    border: 2px solid #ced4da;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.floating-label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #777;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background-color: white;
+    padding: 0 4px;
+}
+
+.floating-input:focus+.floating-label,
+.floating-input:not(:placeholder-shown)+.floating-label {
+    top: -1rem;
+    left: 0.9rem;
+    font-size: 1rem;
+    color: #7B003E;
+}

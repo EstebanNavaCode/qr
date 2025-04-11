@@ -40,6 +40,10 @@ app.get("/dashboard",(req,res)=>{
     res.render("partials/qr")
 })
 
+app.get("/register", (req,res)=> {
+    res.render("partials/registro")
+})
+
 // Start the server
 const PORT = config.PORT || 3000;
 app.listen(PORT, () => {
