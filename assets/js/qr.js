@@ -51,7 +51,7 @@ btnEscanear.addEventListener("click", () => {
             cargarContactos();
 
             Swal.fire({
-              title: "¡Intercambio exitoso!",
+              title: "¡Escaneo exitoso!",
               text: "El código se escaneó correctamente y los datos fueron registrados.",
               icon: "success",
               showConfirmButton: false,
