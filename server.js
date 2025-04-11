@@ -44,6 +44,10 @@ app.get("/register", (req,res)=> {
     res.render("partials/registro")
 })
 
+app.get("/contacs", (req,res)=>{
+    res.render("partials/tablaCompleta")
+})
+
 // Start the server
 const PORT = config.PORT || 3000;
 app.listen(PORT, () => {
